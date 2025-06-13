@@ -19,11 +19,14 @@ This project explores how to apply basic image filters like Gaussian blur, edge 
 
 ### RGB Channel Shift Animation
 
-![RGB Shift](output/rgb_shift_anim.gif)
+
+
+<img src="output/rgb_shift_anim.gif" width="400">
 
 ### Pixelation Filter
 
-![Pixelated](output/pixelated_anim.gif)
+
+<img src="output/pixelated_anim.gif" width="400">
 
 Install dependencies:
 ```bash
