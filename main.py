@@ -5,10 +5,14 @@ import os
 
 
 INPUT_PATH = "input/sample.jpg"
+INPUT_PATH2 = "input/sample2.jpg"
+INPUT_PATH3 = "input/sample3.jpg"
 OUTPUT_PATH = "output/"
 
 # Loading image using Pillow
 image = Image.open(INPUT_PATH)
+image2 = Image.open(INPUT_PATH2)
+image3 = Image.open(INPUT_PATH3)
 
 # Basic filter examples
 blurred = image.filter(ImageFilter.GaussianBlur(4))
@@ -75,3 +79,26 @@ generate_rgb_shift_gif(image)
 print("Animated RGB Glitch Shift applied and saved.")
 
 
+def generate_pixelated_gif(image, frames=10, min_block=10, max_block=30, output_path="output/pixelated_anim.gif"):
+    images = []
+
+    width, height = image.size
+
+    for i in range(frames):
+        block_size = int(
+            min_block + (np.sin(i / frames * 2 * np.pi) + 1) / 2 * (max_block - min_block)
+        )
+
+        small = image.resize(
+            (width // block_size, height // block_size),
+            resample=Image.BILINEAR
+        )
+
+        pixelated = small.resize((width, height), resample=Image.NEAREST)
+        images.append(pixelated.convert("RGB"))
+
+    images[0].save(output_path, save_all=True, append_images=images[1:], duration=100, loop=0)
+
+generate_pixelated_gif(image3)
+
+print("Pixelated Animation applied and saved.")
