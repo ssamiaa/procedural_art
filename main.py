@@ -35,3 +35,22 @@ def rgb_shift(image, shift_amount=5):
 glitch = rgb_shift(image, shift_amount=10)
 glitch.save(os.path.join(OUTPUT_PATH, "rgb_shift.png"))
 
+print("Glitch filter applied and saved.")
+def pixel_sort(image):
+    """Applies pixel sorting based on brightness within each row."""
+    img_np = np.array(image)
+    sorted_img = np.copy(img_np)
+
+    for y in range(img_np.shape[0]): 
+        row = img_np[y]
+
+        sorted_row = sorted(row, key=lambda pixel: np.mean(pixel))
+        sorted_img[y] = sorted_row
+
+    return Image.fromarray(sorted_img)
+
+sorted_image = pixel_sort(image)
+sorted_image.save(os.path.join(OUTPUT_PATH, "pixel_sort.png"))
+
+print("Pixel sorting filter applied and saved.")
+
