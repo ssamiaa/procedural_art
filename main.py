@@ -36,6 +36,7 @@ glitch = rgb_shift(image, shift_amount=10)
 glitch.save(os.path.join(OUTPUT_PATH, "rgb_shift.png"))
 
 print("Glitch filter applied and saved.")
+
 def pixel_sort(image):
     """Applies pixel sorting based on brightness within each row."""
     img_np = np.array(image)
@@ -53,4 +54,24 @@ sorted_image = pixel_sort(image)
 sorted_image.save(os.path.join(OUTPUT_PATH, "pixel_sort.png"))
 
 print("Pixel sorting filter applied and saved.")
+
+def generate_rgb_shift_gif(image, frames=10, shift_range=15, output_path="output/rgb_shift_anim.gif"):
+    images = []
+
+    for i in range(frames):
+        shift = int(np.sin(i / frames * 2 * np.pi) * shift_range)
+        r, g, b = image.split()
+
+        r = r.transform(r.size, Image.AFFINE, (1, 0, shift, 0, 1, 0))
+        b = b.transform(b.size, Image.AFFINE, (1, 0, -shift, 0, 1, 0))
+
+        img = Image.merge("RGB", (r, g, b)).convert("RGB")  # <- Force RGB mode
+        images.append(img)
+
+    images[0].save(output_path, save_all=True, append_images=images[1:], duration=100, loop=0)
+
+generate_rgb_shift_gif(image)
+
+print("Animated RGB Glitch Shift applied and saved.")
+
 
